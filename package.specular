@@ -7,3 +7,11 @@ annotation SignedOperationV1()
 
 @specular:Configurator(go, gopackage="go.deployport.com/api-services-corelib/configurator")
 annotation ServiceSignatureV1(serviceName: string!)
+
+problem struct AccessDeniedProblem {
+    message: string!
+}
+
+problem struct ForbiddenProblem {
+    message: string!
+}

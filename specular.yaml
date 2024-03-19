@@ -1,6 +1,9 @@
 packages:
-- origin: "file://package.specular"
-  generate:
-    - language: go
-      client:
-        output: .
+  - origin: "file://package.specular"
+    generate:
+      - language: go
+        client:
+          output: .
+      - language: js
+        client:
+          output: js
