@@ -1,11 +1,14 @@
 @specular:Link(go, gopackage = "go.deployport.com/api-services-corelib")
+@specular:Link(js, npmpackage = "@deployport/api-services-core")
 
 library package Deployport/CoreLib
 
 # Marks an operation with digital signature authentication for id4ntity verification
 annotation SignedOperationV1()
 
+@specular:Configurator(js, npmpackage="@deployport/api-services-core/configurator")
 @specular:Configurator(go, gopackage="go.deployport.com/api-services-corelib/configurator")
+
 annotation ServiceSignatureV1(serviceName: string!)
 
 problem struct AccessDeniedProblem {

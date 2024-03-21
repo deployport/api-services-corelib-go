@@ -1,0 +1,22 @@
+{
+    "name": "@deployport/api-services-core",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./specular.js",
+    "types": "./specular.d.ts",
+    "author": "",
+    "scripts": {
+        "build": "tsc configurator/index.ts --declaration --module nodenext"
+    },
+    "type": "module",
+    "license": "ISC",
+    "dependencies": {
+        "@aws-crypto/sha256-js": "^5.2.0",
+        "@aws-sdk/types": "^3.515.0",
+        "@deployport/specular-runtime": "^0.1.5"
+    },
+    "devDependencies": {
+        "@tsconfig/node18": "^18.2.2",
+        "@types/node": "^20.8.3"
+    }
+}
