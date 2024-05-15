@@ -2,7 +2,6 @@ package configurator
 
 import (
 	"errors"
-	"log"
 	"os"
 
 	"go.deployport.com/api-services-corelib/configurator/signingv1"
@@ -54,11 +53,9 @@ func (c *Config) Validate() error {
 	if c.Credentials.KeyID == "" {
 		return errors.New("key id is required")
 	}
-	log.Printf("key id: %s", c.Credentials.KeyID)
 	if c.Credentials.Secret == "" {
 		return errors.New("secret is required")
 	}
-	log.Printf("secret: %s", c.Credentials.Secret)
 	if c.Region == "" {
 		return errors.New("region is required")
 	}

@@ -101,6 +101,7 @@ func (r *signerRequest) generate() error {
 	r.req.Header.Set(vendorHeaderCanonicalNameKey(r.vendorCode, "Content-Sha256"), bodyDigest)
 
 	r.headerBuilder = headerSignatureBuilder{
+		logger:     logger,
 		Request:    r.req,
 		Body:       r.body,
 		BodyDigest: bodyDigest,

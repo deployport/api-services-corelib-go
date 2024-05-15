@@ -3,7 +3,7 @@ package signingv1
 import (
 	"crypto/hmac"
 	"crypto/sha256"
-	"log"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"sort"
@@ -47,6 +47,7 @@ func (h headerMatchers) MatchHeader(name string) bool {
 const AuthorizationHeader = "Authorization"
 
 type headerSignatureBuilder struct {
+	logger *slog.Logger
 	// Signed       http.Header
 	Request      *http.Request
 	Body         []byte
@@ -93,7 +94,7 @@ func (ctx *headerSignatureBuilder) buildCanonicalHeaders() {
 
 	headerItems := make([]string, len(ctx.orderedNames))
 
-	log.Printf("ctx.orderedNames: %v", ctx.orderedNames)
+	// log.Printf("ctx.orderedNames: %v", ctx.orderedNames)
 	for i, k := range ctx.orderedNames {
 		if k == "host" {
 			if host := ctx.Request.Host; host != "" {
@@ -111,7 +112,7 @@ func (ctx *headerSignatureBuilder) buildCanonicalHeaders() {
 		}
 	}
 
-	log.Printf("headerItems: %s\n", headerItems)
+	ctx.logger.Debug("headerItems", slog.Any("headerItems", headerItems))
 	// stripExcessSpaces(headerItems)
 	ctx.canonicalHeaders = strings.Join(headerItems, "\n")
 }
