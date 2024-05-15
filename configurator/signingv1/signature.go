@@ -108,8 +108,7 @@ func (r *signerRequest) generate() error {
 	}
 	r.headerBuilder.build()
 	r.buildStringToSign()
-	// logger.Debug("signing request", "stringToSign", r.stringToSign)
-	fmt.Printf("string to sign: %s\n", r.stringToSign)
+	logger.Debug("signing request", "stringToSign", r.stringToSign)
 	r.buildSignature()
 	logger.Debug("signing request", "ordered header names", r.headerBuilder.signedHeaderNames)
 	parts := []string{
@@ -121,12 +120,8 @@ func (r *signerRequest) generate() error {
 	return nil
 }
 
-const signedHeadersPartPrefix = "SignedHeaders="
-
-const signaturePartPrefix = "Signature="
-
 func (r *signerRequest) buildStringToSign() {
-	fmt.Printf("building string to sign: %s\n", r.headerBuilder.canonicalString)
+	r.logger.Debug("building string to sign", "canonicalString", r.headerBuilder.canonicalString)
 	r.stringToSign = strings.Join([]string{
 		vendorAuthHeaderPrefix(r.vendorCode),
 		formatTime(r.time),
@@ -134,6 +129,10 @@ func (r *signerRequest) buildStringToSign() {
 		hex.EncodeToString(hashSHA256([]byte(r.headerBuilder.canonicalString))),
 	}, "\n")
 }
+
+const signedHeadersPartPrefix = "SignedHeaders="
+
+const signaturePartPrefix = "Signature="
 
 func (r *signerRequest) buildSignature() {
 	creds := r.deriveSigningKey(r.region, r.service, r.creds.Secret, r.time)

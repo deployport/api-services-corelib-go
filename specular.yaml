@@ -4,6 +4,3 @@ packages:
       - language: go
         client:
           output: .
-      - language: js
-        client:
-          output: js
