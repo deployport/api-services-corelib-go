@@ -18,6 +18,8 @@ github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcU
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 go.deployport.com/specular-runtime v0.4.0 h1:fuEuvXKe3mQuGMG1/VmaiRm/5bf1dj+j33L6SDExuJM=
 go.deployport.com/specular-runtime v0.4.0/go.mod h1:Rwqc+nTMDUcvrLjUzqIeUE8cynSY+AiE+FZ9MfEf5uM=
+go.deployport.com/specular-runtime v0.6.0 h1:va/r8TnKo0zPHk0Cz1r9DYpe39AwvlOvBGxt0ZKYaTs=
+go.deployport.com/specular-runtime v0.6.0/go.mod h1:Rwqc+nTMDUcvrLjUzqIeUE8cynSY+AiE+FZ9MfEf5uM=
 golang.org/x/exp v0.0.0-20240213143201-ec583247a57a h1:HinSgX1tJRX3KsL//Gxynpw5CTOAIPhgL4W8PNiIpVE=
 golang.org/x/exp v0.0.0-20240213143201-ec583247a57a/go.mod h1:CxmFvTBINI24O/j8iY7H1xHzx2i4OsyguNBmN/uPtqc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

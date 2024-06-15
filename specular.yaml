@@ -1,5 +1,9 @@
 packages:
   - origin: "file://package.specular"
+    version: 0.1.7
+    path:
+      workspace: deployport
+      project: corelib
     generate:
       - language: go
         client:

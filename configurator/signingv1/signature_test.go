@@ -29,7 +29,7 @@ func TestSignature(t *testing.T) {
 	date, err := time.Parse(time.RFC3339, "2021-01-01T00:00:00Z")
 	require.NoError(t, err)
 
-	pk := sdk.NewPackage("crm")
+	pk := sdk.NewPackage(sdk.ModulePathFromTrustedValues("test", "crm"))
 	contactsRes, err := pk.NewResource("contacts")
 	require.NoError(t, err)
 

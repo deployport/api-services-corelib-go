@@ -2,7 +2,6 @@ package corelib
 
 import (
 	"errors"
-	"sync"
 
 	clientruntime "go.deployport.com/specular-runtime/client"
 )
@@ -44,6 +43,7 @@ func (e *AccessDeniedProblem) SetMessage(message string) {
 	e.Message = message
 }
 
+// Hydrate implements struct hydrate
 func (e *AccessDeniedProblem) Hydrate(ctx *clientruntime.HydratationContext) error {
 	if err := clientruntime.ContentRequireStringProperty(ctx.Content(), "message", &e.Message); err != nil {
 		return err
@@ -51,15 +51,15 @@ func (e *AccessDeniedProblem) Hydrate(ctx *clientruntime.HydratationContext) err
 	return nil
 }
 
+// Dehydrate implements struct dehydrate
 func (e *AccessDeniedProblem) Dehydrate(ctx *clientruntime.DehydrationContext) (err error) {
-	ctx.Content().SetStruct(e.TypeFQTN().String())
 	ctx.Content().SetProperty("message", e.Message)
 	return nil
 }
 
-// TypeFQTN returns the Allow Typq Fully Qualified Type Name
-func (e *AccessDeniedProblem) TypeFQTN() clientruntime.TypeFQTN {
-	return clientruntime.NewTypeFQTN("Deployport/CoreLib", "AccessDeniedProblem")
+// StructPath returns StructPath
+func (e *AccessDeniedProblem) StructPath() clientruntime.StructPath {
+	return *localSpecularMeta.structPathAccessDeniedProblem.Path()
 }
 
 // NewForbiddenProblem creates a new ForbiddenProblem
@@ -99,6 +99,7 @@ func (e *ForbiddenProblem) SetMessage(message string) {
 	e.Message = message
 }
 
+// Hydrate implements struct hydrate
 func (e *ForbiddenProblem) Hydrate(ctx *clientruntime.HydratationContext) error {
 	if err := clientruntime.ContentRequireStringProperty(ctx.Content(), "message", &e.Message); err != nil {
 		return err
@@ -106,15 +107,15 @@ func (e *ForbiddenProblem) Hydrate(ctx *clientruntime.HydratationContext) error 
 	return nil
 }
 
+// Dehydrate implements struct dehydrate
 func (e *ForbiddenProblem) Dehydrate(ctx *clientruntime.DehydrationContext) (err error) {
-	ctx.Content().SetStruct(e.TypeFQTN().String())
 	ctx.Content().SetProperty("message", e.Message)
 	return nil
 }
 
-// TypeFQTN returns the Allow Typq Fully Qualified Type Name
-func (e *ForbiddenProblem) TypeFQTN() clientruntime.TypeFQTN {
-	return clientruntime.NewTypeFQTN("Deployport/CoreLib", "ForbiddenProblem")
+// StructPath returns StructPath
+func (e *ForbiddenProblem) StructPath() clientruntime.StructPath {
+	return *localSpecularMeta.structPathForbiddenProblem.Path()
 }
 
 // SignedOperationV1 entity
@@ -122,55 +123,77 @@ func (e *ForbiddenProblem) TypeFQTN() clientruntime.TypeFQTN {
 type SignedOperationV1 struct {
 }
 
-// TypeFQTN returns the Allow Typq Fully Qualified Type Name
-func (tp *SignedOperationV1) TypeFQTN() clientruntime.TypeFQTN {
-	return clientruntime.NewTypeFQTN("Deployport/CoreLib", "SignedOperationV1")
-}
-
 // ServiceSignatureV1 entity
 type ServiceSignatureV1 struct {
 	ServiceName string
 }
 
-// TypeFQTN returns the Allow Typq Fully Qualified Type Name
-func (tp *ServiceSignatureV1) TypeFQTN() clientruntime.TypeFQTN {
-	return clientruntime.NewTypeFQTN("Deployport/CoreLib", "ServiceSignatureV1")
-}
+var packagePath = clientruntime.ModulePathFromTrustedValues(
+	"deployport",
+	"corelib",
+)
 
-// NewSpecularPackage returns a new package instance for Deployport/CoreLib
-func NewSpecularPackage() (*clientruntime.Package, error) {
-	pk := clientruntime.NewPackage(
-		"Deployport/CoreLib",
-	)
-	if _, err := pk.NewType(
+func newSpecularPackage() (pk *clientruntime.Package, err error) {
+	pk = clientruntime.NewPackage(packagePath)
+	localSpecularMeta.structPathAccessDeniedProblem, err = pk.NewType(
 		"AccessDeniedProblem",
 		clientruntime.TypeBuilder(func() clientruntime.Struct {
 			return NewAccessDeniedProblem()
 		}),
-	); err != nil {
+	)
+	if err != nil {
 		return nil, err
 	}
-	if _, err := pk.NewType(
+	localSpecularMeta.structPathForbiddenProblem, err = pk.NewType(
 		"ForbiddenProblem",
 		clientruntime.TypeBuilder(func() clientruntime.Struct {
 			return NewForbiddenProblem()
 		}),
-	); err != nil {
+	)
+	if err != nil {
 		return nil, err
 	}
 
 	return pk, nil
 }
 
-var specularPackageOnce = sync.OnceValue(func() *clientruntime.Package {
-	pk, err := NewSpecularPackage()
-	if err != nil {
-		panic(errors.New("failed to initialize shared allow package Deployport/CoreLib"))
-	}
-	return pk
-})
+func init() {
+	initSpecularMeta()
+}
 
-// SpecularPackage returns a shared package instance for Deployport/CoreLib, panics when errors are found
-func SpecularPackage() *clientruntime.Package {
-	return specularPackageOnce()
+func initSpecularMeta() {
+	pk, err := newSpecularPackage()
+	if err != nil {
+		panic(errors.New("failed to initialize shared allow package deployport/corelib"))
+	}
+	localSpecularMeta.mod = pk
+}
+
+// SpecularMetaInfo defines metadata of the specular module
+type SpecularMetaInfo struct {
+	mod                           *clientruntime.Package
+	structPathAccessDeniedProblem *clientruntime.StructDefinition
+	structPathForbiddenProblem    *clientruntime.StructDefinition
+}
+
+// Module returns the module definition
+func (m *SpecularMetaInfo) Module() *clientruntime.Package {
+	return m.mod
+}
+
+// AccessDeniedProblem allows easy access to structure
+func (m *SpecularMetaInfo) AccessDeniedProblem() *clientruntime.StructDefinition {
+	return m.structPathAccessDeniedProblem
+}
+
+// ForbiddenProblem allows easy access to structure
+func (m *SpecularMetaInfo) ForbiddenProblem() *clientruntime.StructDefinition {
+	return m.structPathForbiddenProblem
+}
+
+var localSpecularMeta *SpecularMetaInfo = &SpecularMetaInfo{}
+
+// SpecularMeta returns metadata of the specular module
+func SpecularMeta() *SpecularMetaInfo {
+	return localSpecularMeta
 }
