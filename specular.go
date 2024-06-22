@@ -14,7 +14,7 @@ func NewAccessDeniedProblem() *AccessDeniedProblem {
 
 // AccessDeniedProblem entity
 type AccessDeniedProblem struct {
-	Message string
+	Message string `json:"message,omitempty"`
 }
 
 // Error implements the error interface
@@ -43,20 +43,6 @@ func (e *AccessDeniedProblem) SetMessage(message string) {
 	e.Message = message
 }
 
-// Hydrate implements struct hydrate
-func (e *AccessDeniedProblem) Hydrate(ctx *clientruntime.HydratationContext) error {
-	if err := clientruntime.ContentRequireStringProperty(ctx.Content(), "message", &e.Message); err != nil {
-		return err
-	}
-	return nil
-}
-
-// Dehydrate implements struct dehydrate
-func (e *AccessDeniedProblem) Dehydrate(ctx *clientruntime.DehydrationContext) (err error) {
-	ctx.Content().SetProperty("message", e.Message)
-	return nil
-}
-
 // StructPath returns StructPath
 func (e *AccessDeniedProblem) StructPath() clientruntime.StructPath {
 	return *localSpecularMeta.structPathAccessDeniedProblem.Path()
@@ -70,7 +56,7 @@ func NewForbiddenProblem() *ForbiddenProblem {
 
 // ForbiddenProblem entity
 type ForbiddenProblem struct {
-	Message string
+	Message string `json:"message,omitempty"`
 }
 
 // Error implements the error interface
@@ -97,20 +83,6 @@ func (e *ForbiddenProblem) GetMessage() string {
 // SetMessage sets the value for the field message
 func (e *ForbiddenProblem) SetMessage(message string) {
 	e.Message = message
-}
-
-// Hydrate implements struct hydrate
-func (e *ForbiddenProblem) Hydrate(ctx *clientruntime.HydratationContext) error {
-	if err := clientruntime.ContentRequireStringProperty(ctx.Content(), "message", &e.Message); err != nil {
-		return err
-	}
-	return nil
-}
-
-// Dehydrate implements struct dehydrate
-func (e *ForbiddenProblem) Dehydrate(ctx *clientruntime.DehydrationContext) (err error) {
-	ctx.Content().SetProperty("message", e.Message)
-	return nil
 }
 
 // StructPath returns StructPath

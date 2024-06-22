@@ -16,12 +16,8 @@ github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjR
 github.com/rogpeppe/go-internal v1.10.0/go.mod h1:UQnix2H7Ngw/k4C5ijL5+65zddjncjaFoBhdsK/akog=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
-go.deployport.com/specular-runtime v0.4.0 h1:fuEuvXKe3mQuGMG1/VmaiRm/5bf1dj+j33L6SDExuJM=
-go.deployport.com/specular-runtime v0.4.0/go.mod h1:Rwqc+nTMDUcvrLjUzqIeUE8cynSY+AiE+FZ9MfEf5uM=
-go.deployport.com/specular-runtime v0.6.0 h1:va/r8TnKo0zPHk0Cz1r9DYpe39AwvlOvBGxt0ZKYaTs=
-go.deployport.com/specular-runtime v0.6.0/go.mod h1:Rwqc+nTMDUcvrLjUzqIeUE8cynSY+AiE+FZ9MfEf5uM=
-golang.org/x/exp v0.0.0-20240213143201-ec583247a57a h1:HinSgX1tJRX3KsL//Gxynpw5CTOAIPhgL4W8PNiIpVE=
-golang.org/x/exp v0.0.0-20240213143201-ec583247a57a/go.mod h1:CxmFvTBINI24O/j8iY7H1xHzx2i4OsyguNBmN/uPtqc=
+go.deployport.com/specular-runtime v0.7.0 h1:dQ9f0KOwNJBOE7gsdSAJKEdZTz/mh0v66A97QFE2BJo=
+go.deployport.com/specular-runtime v0.7.0/go.mod h1:Rwqc+nTMDUcvrLjUzqIeUE8cynSY+AiE+FZ9MfEf5uM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=
