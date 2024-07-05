@@ -1,6 +1,7 @@
 package corelib
 
 import (
+	"encoding/json"
 	"errors"
 
 	clientruntime "go.deployport.com/specular-runtime/client"
@@ -9,10 +10,11 @@ import (
 // NewAccessDeniedProblem creates a new AccessDeniedProblem
 func NewAccessDeniedProblem() *AccessDeniedProblem {
 	s := &AccessDeniedProblem{}
+	s.InitializeDefaults()
 	return s
 }
 
-// AccessDeniedProblem entity
+// AccessDeniedProblem struct
 type AccessDeniedProblem struct {
 	Message string `json:"message,omitempty"`
 }
@@ -48,13 +50,38 @@ func (e *AccessDeniedProblem) StructPath() clientruntime.StructPath {
 	return *localSpecularMeta.structPathAccessDeniedProblem.Path()
 }
 
+// InitializeDefaults initializes the default values in the struct
+func (e *AccessDeniedProblem) InitializeDefaults() {
+}
+
+// accessDeniedProblemAlias is defined to help pre and post JSON marshaling without recursive loops
+type accessDeniedProblemAlias AccessDeniedProblem
+
+// UnmarshalJSON implements json.Unmarshaler
+func (e *AccessDeniedProblem) UnmarshalJSON(data []byte) error {
+	var alias accessDeniedProblemAlias
+	if err := json.Unmarshal(data, &alias); err != nil {
+		return err
+	}
+	((*AccessDeniedProblem)(&alias)).InitializeDefaults()
+	*e = AccessDeniedProblem(alias)
+	return nil
+}
+
+// MarshalJSON implements json.Marshaler
+func (e AccessDeniedProblem) MarshalJSON() ([]byte, error) {
+	alias := accessDeniedProblemAlias(e)
+	return json.Marshal(alias)
+}
+
 // NewForbiddenProblem creates a new ForbiddenProblem
 func NewForbiddenProblem() *ForbiddenProblem {
 	s := &ForbiddenProblem{}
+	s.InitializeDefaults()
 	return s
 }
 
-// ForbiddenProblem entity
+// ForbiddenProblem struct
 type ForbiddenProblem struct {
 	Message string `json:"message,omitempty"`
 }
@@ -88,6 +115,30 @@ func (e *ForbiddenProblem) SetMessage(message string) {
 // StructPath returns StructPath
 func (e *ForbiddenProblem) StructPath() clientruntime.StructPath {
 	return *localSpecularMeta.structPathForbiddenProblem.Path()
+}
+
+// InitializeDefaults initializes the default values in the struct
+func (e *ForbiddenProblem) InitializeDefaults() {
+}
+
+// forbiddenProblemAlias is defined to help pre and post JSON marshaling without recursive loops
+type forbiddenProblemAlias ForbiddenProblem
+
+// UnmarshalJSON implements json.Unmarshaler
+func (e *ForbiddenProblem) UnmarshalJSON(data []byte) error {
+	var alias forbiddenProblemAlias
+	if err := json.Unmarshal(data, &alias); err != nil {
+		return err
+	}
+	((*ForbiddenProblem)(&alias)).InitializeDefaults()
+	*e = ForbiddenProblem(alias)
+	return nil
+}
+
+// MarshalJSON implements json.Marshaler
+func (e ForbiddenProblem) MarshalJSON() ([]byte, error) {
+	alias := forbiddenProblemAlias(e)
+	return json.Marshal(alias)
 }
 
 // SignedOperationV1 entity
@@ -153,13 +204,13 @@ func (m *SpecularMetaInfo) Module() *clientruntime.Package {
 	return m.mod
 }
 
-// AccessDeniedProblem allows easy access to structure
-func (m *SpecularMetaInfo) AccessDeniedProblem() *clientruntime.StructDefinition {
+// AccessDeniedProblemStruct allows easy access to structure
+func (m *SpecularMetaInfo) AccessDeniedProblemStruct() *clientruntime.StructDefinition {
 	return m.structPathAccessDeniedProblem
 }
 
-// ForbiddenProblem allows easy access to structure
-func (m *SpecularMetaInfo) ForbiddenProblem() *clientruntime.StructDefinition {
+// ForbiddenProblemStruct allows easy access to structure
+func (m *SpecularMetaInfo) ForbiddenProblemStruct() *clientruntime.StructDefinition {
 	return m.structPathForbiddenProblem
 }
 
