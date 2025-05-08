@@ -2,6 +2,8 @@ package configurator
 
 import (
 	"context"
+	"net/http"
+	"strings"
 	"time"
 
 	"go.deployport.com/api-services-corelib/configurator/signingv1"
@@ -14,6 +16,7 @@ func NewOnSubmissionForCredentials(
 	region string,
 ) sdk.OnSubmissionHandler {
 	return func(ctx context.Context, sub *sdk.Submission) error {
+		ReplaceRegionInRequest(region, sub.HTTPRequest)
 		sa := FindSignedOperationV1Annotation(sub.OperationRequest.Operation.Annotations())
 		if sa == nil {
 			return nil
@@ -40,4 +43,28 @@ func NewOnSubmissionForCredentials(
 		}
 		return nil
 	}
+}
+
+// NewOnSubmissionForRegionOnly returns a OnSubmissionHandler that sets the region in the request
+func NewOnSubmissionForRegionOnly(
+	region string,
+) sdk.OnSubmissionHandler {
+	return func(ctx context.Context, sub *sdk.Submission) error {
+		// replace host <region> placeholder with the region
+		// in the request URL
+		ReplaceRegionInRequest(region, sub.HTTPRequest)
+		return nil
+	}
+}
+
+// ReplaceRegionInRequest replaces the <region> placeholder in the host with the region
+func ReplaceRegionInRequest(region string, req *http.Request) {
+	// replace host <region> placeholder with the region
+	// in the request URL
+	req.Host = strings.ReplaceAll(req.Host, "<region>", region)
+	hostHeader := req.Header.Get("Host")
+	if hostHeader != "" {
+		req.Header.Set("Host", strings.ReplaceAll(hostHeader, "<region>", region))
+	}
+	req.URL.Host = strings.ReplaceAll(req.URL.Host, "<region>", region)
 }

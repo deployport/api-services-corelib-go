@@ -1,7 +1,6 @@
 package configurator
 
 import (
-	"errors"
 	"os"
 
 	"go.deployport.com/api-services-corelib/configurator/signingv1"
@@ -14,15 +13,26 @@ func DefaultClientOptions(options ...sdk.Option) (sdk.Options, error) {
 	if err := sdk.ApplyOptions(&c, options...); err != nil {
 		return nil, err
 	}
-	if err := c.Validate(); err != nil {
-		return nil, err
+	c.LoadFromEnv()
+	opts := make(sdk.Options, 0, 2)
+	if c.Region != "" {
+		opts = append(
+			opts,
+			sdk.WithOnSubmission(NewOnSubmissionForRegionOnly(
+				c.Region,
+			)),
+		)
 	}
-	return sdk.Options{
-		sdk.WithOnSubmission(NewOnSubmissionForCredentials(
-			*c.Credentials,
-			c.Region,
-		)),
-	}, nil
+	if c.IsComplete() {
+		opts = append(
+			opts,
+			sdk.WithOnSubmission(NewOnSubmissionForCredentials(
+				*c.Credentials,
+				c.Region,
+			)),
+		)
+	}
+	return opts, nil
 }
 
 // Config is the configuration for the client
@@ -31,35 +41,37 @@ type Config struct {
 	Region      string
 }
 
-// Validate validates the configuration
-func (c *Config) Validate() error {
-	// TODO: Load from file
-	if c.Credentials == nil {
-		c.Credentials = &signingv1.Credentials{}
-	}
-	if c.Credentials.KeyID == "" {
-		if keyID := os.Getenv("DPP_ACCESS_KEY_ID"); keyID != "" {
-			c.Credentials.KeyID = keyID
-		}
-	}
-	if c.Credentials.Secret == "" {
-		if secret := os.Getenv("DPP_SECRET_ACCESS_KEY"); secret != "" {
-			c.Credentials.Secret = secret
-		}
-	}
-	if region := os.Getenv("DPP_REGION"); region != "" && c.Region == "" {
-		c.Region = region
-	}
-	if c.Credentials.KeyID == "" {
-		return errors.New("key id is required")
-	}
-	if c.Credentials.Secret == "" {
-		return errors.New("secret is required")
+// IsComplete checks if the configuration is complete
+func (c *Config) IsComplete() bool {
+	if c.Credentials.IsEmpty() {
+		return false
 	}
 	if c.Region == "" {
-		return errors.New("region is required")
+		return false
 	}
-	return nil
+	return true
+}
+
+// LoadFromEnv loads the configuration from the environment variables
+// DPP_ACCESS_KEY_ID, DPP_SECRET_ACCESS_KEY and DPP_REGION
+func (c *Config) LoadFromEnv() {
+	if c.Credentials == nil {
+		tempCreds := signingv1.Credentials{}
+		if keyID := os.Getenv("DPP_ACCESS_KEY_ID"); keyID != "" {
+			tempCreds.KeyID = keyID
+		}
+		if secret := os.Getenv("DPP_SECRET_ACCESS_KEY"); secret != "" {
+			tempCreds.Secret = secret
+		}
+		if !tempCreds.IsEmpty() {
+			c.Credentials = &tempCreds
+		}
+	}
+	if c.Region == "" {
+		if region := os.Getenv("DPP_REGION"); region != "" {
+			c.Region = region
+		}
+	}
 }
 
 // WithCredentials sets the credentials

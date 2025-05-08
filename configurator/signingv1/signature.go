@@ -20,6 +20,14 @@ type Credentials struct {
 	Secret string
 }
 
+// IsEmpty checks if the credentials are empty
+func (c *Credentials) IsEmpty() bool {
+	if c == nil {
+		return true
+	}
+	return c.KeyID == "" || c.Secret == ""
+}
+
 // Signature is the signature for the request
 type Signature struct {
 	Digest string
