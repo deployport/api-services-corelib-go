@@ -16,7 +16,7 @@ func NewAccessDeniedProblem() *AccessDeniedProblem {
 
 // AccessDeniedProblem struct
 type AccessDeniedProblem struct {
-	Message string `json:"message,omitempty"`
+	Message string `json:"message,omitempty" yaml:"message,omitempty"`
 }
 
 // Error implements the error interface
@@ -83,7 +83,7 @@ func NewForbiddenProblem() *ForbiddenProblem {
 
 // ForbiddenProblem struct
 type ForbiddenProblem struct {
-	Message string `json:"message,omitempty"`
+	Message string `json:"message,omitempty" yaml:"message,omitempty"`
 }
 
 // Error implements the error interface

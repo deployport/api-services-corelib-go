@@ -1,7 +1,7 @@
 @specular:Link(go, gopackage = "go.deployport.com/api-services-corelib")
 @specular:Link(js, npmpackage = "@deployport/api-services-corelib")
 
-library package deployport/corelib
+library package
 
 # Marks an operation with digital signature authentication for id4ntity verification
 annotation SignedOperationV1()
